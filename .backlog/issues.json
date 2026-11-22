@@ -6,14 +6,14 @@
   "issue_count": 1,
   "issues": [
     {
-      "number": 3,
-      "title": "Rename \"Original Website\"",
-      "description": "Rename \"Original Website\" to \"View Original\" and \"Reconstructed View\" to \"View Adapted\"",
+      "number": 4,
+      "title": "Place settings in their own view",
+      "description": "All settings should appear in a full-page view. The settings menu should stay as a sidebar. ",
       "state": "open",
       "labels": [],
-      "html_url": "https://github.com/NicholasCaporusso/adaptUI/issues/3",
-      "created_at": "2026-11-22T12:24:28Z",
-      "updated_at": "2026-11-22T12:24:28Z",
+      "html_url": "https://github.com/NicholasCaporusso/adaptUI/issues/4",
+      "created_at": "2026-11-22T12:33:27Z",
+      "updated_at": "2026-11-22T12:33:27Z",
       "author": "NicholasCaporusso"
     }
   ]

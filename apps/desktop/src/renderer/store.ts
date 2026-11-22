@@ -111,7 +111,7 @@ export const useShellStore = create<ShellStore>((set, get) => ({
   busy: false,
 
   setActivePanel: (panel) => {
-    set({ activePanel: panel });
+    set({ activePanel: panel, favoritesPageOpen: panel !== "none" ? false : get().favoritesPageOpen });
     if (panel === "diagnostics") {
       void get().refreshDiagnostics();
     }
@@ -120,7 +120,8 @@ export const useShellStore = create<ShellStore>((set, get) => ({
     }
   },
 
-  setFavoritesPageOpen: (open) => set({ favoritesPageOpen: open }),
+  setFavoritesPageOpen: (open) =>
+    set({ favoritesPageOpen: open, activePanel: open ? "none" : get().activePanel }),
   addCustomFavorite: (label, url) => {
     const existing = get().customFavorites;
     if (existing.some((f) => f.url === url)) return;
@@ -175,6 +176,7 @@ export const useShellStore = create<ShellStore>((set, get) => ({
   navigate: async (url) => {
     set({
       favoritesPageOpen: false,
+      activePanel: "none",
       busy: true,
       activityMessage: `Loading ${url}...`,
       statusBanner: `Navigating to ${url}...`,
@@ -191,7 +193,12 @@ export const useShellStore = create<ShellStore>((set, get) => ({
   },
 
   goBack: async () => {
-    set({ favoritesPageOpen: false, busy: true, activityMessage: "Returning to previous page..." });
+    set({
+      favoritesPageOpen: false,
+      activePanel: "none",
+      busy: true,
+      activityMessage: "Returning to previous page...",
+    });
     try {
       const next = await window.adaptui.goBack();
       set({ appState: next, statusBanner: `Navigated back to ${next.title || next.url}` });
@@ -201,7 +208,12 @@ export const useShellStore = create<ShellStore>((set, get) => ({
   },
 
   goForward: async () => {
-    set({ favoritesPageOpen: false, busy: true, activityMessage: "Moving forward..." });
+    set({
+      favoritesPageOpen: false,
+      activePanel: "none",
+      busy: true,
+      activityMessage: "Moving forward...",
+    });
     try {
       const next = await window.adaptui.goForward();
       set({ appState: next, statusBanner: `Navigated forward to ${next.title || next.url}` });
@@ -211,7 +223,12 @@ export const useShellStore = create<ShellStore>((set, get) => ({
   },
 
   reload: async () => {
-    set({ favoritesPageOpen: false, busy: true, activityMessage: "Reloading and analyzing page..." });
+    set({
+      favoritesPageOpen: false,
+      activePanel: "none",
+      busy: true,
+      activityMessage: "Reloading and analyzing page...",
+    });
     try {
       const next = await window.adaptui.reload();
       set({ appState: next, statusBanner: `Reloaded ${next.title || next.url}` });
@@ -224,6 +241,7 @@ export const useShellStore = create<ShellStore>((set, get) => ({
     const next = await window.adaptui.setViewMode(mode);
     set({
       favoritesPageOpen: false,
+      activePanel: "none",
       appState: next,
       statusBanner:
         mode === "original"

@@ -34,19 +34,23 @@ test.describe("AdaptUI Desktop End-to-End Verification", () => {
 
       await window.getByRole("button", { name: "Settings", exact: true }).click();
       await window.getByRole("menu", { name: "Settings" }).getByRole("menuitem", { name: "Profiles" }).click();
+      await expect(window.getByTestId("settings-page")).toBeVisible();
       await window.getByLabel(/Show Images/i).uncheck();
       await window.getByLabel(/Show Videos/i).uncheck();
       await window.getByRole("button", { name: "Save Profile" }).click();
+      await window.getByRole("button", { name: "Close" }).click();
       await expect(labImg).toHaveCount(0);
       await expect(labVideo).toHaveCount(0);
 
       // Re-enable images & videos and confirm they return
+      await window.getByRole("button", { name: "Settings", exact: true }).click();
+      await window.getByRole("menu", { name: "Settings" }).getByRole("menuitem", { name: "Profiles" }).click();
       await window.getByLabel(/Show Images/i).check();
       await window.getByLabel(/Show Videos/i).check();
       await window.getByRole("button", { name: "Save Profile" }).click();
+      await window.getByRole("button", { name: "Close" }).click();
       await expect(labImg).toBeVisible();
       await expect(labVideo).toBeVisible();
-      await window.getByRole("button", { name: "Close" }).click();
 
       const openFavorite = async (namePattern: RegExp) => {
         const favBtn = window.getByRole("button", { name: "Favorites" });
@@ -168,12 +172,14 @@ test.describe("AdaptUI Desktop End-to-End Verification", () => {
       await expect(techStatusBar).toBeVisible();
 
       await settingsMenu.getByRole("menuitem", { name: "Security" }).click();
+      await expect(window.getByTestId("settings-page")).toBeVisible();
+      const settingsSidebar = window.getByRole("navigation", { name: "Settings navigation" });
+      await expect(settingsSidebar).toBeVisible();
       await expect(window.getByRole("heading", { name: "Security", exact: true })).toBeVisible();
       await expect(window.getByText(/Blocked Unsafe Links: 1/i)).toBeVisible();
-      await window.getByRole("button", { name: "Close" }).click();
 
-      // Switch Accessibility Profile live via Settings -> Profiles
-      await openSetting("Profiles");
+      // Switch directly to Profiles using the persistent Settings sidebar inside the full-page view
+      await settingsSidebar.getByRole("button", { name: "Profiles", exact: true }).click();
       await window.getByRole("button", { name: "Eye-Gaze & Large Targets" }).click();
       await expect(window.locator(".shell-app")).toHaveAttribute("data-contrast", "high");
       await expect(window.locator(".shell-app")).toHaveAttribute("data-eye-gaze", "true");

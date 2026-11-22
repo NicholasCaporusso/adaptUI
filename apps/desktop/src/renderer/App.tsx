@@ -11,11 +11,7 @@ import { useShellStore, type ActivePanel } from "./store";
 import { useVoiceCapture } from "./hooks/useVoiceCapture";
 import { AICommandSidebar } from "./components/AICommandSidebar";
 import { FavoritesPage } from "./components/FavoritesPage";
-import { ProfilesPanel } from "./components/ProfilesPanel";
-import { AIPrivacyPanel } from "./components/AIPrivacyPanel";
-import { VoiceSettingsPanel } from "./components/VoiceSettingsPanel";
-import { DiagnosticsPanel } from "./components/DiagnosticsPanel";
-import { SecurityPanel } from "./components/SecurityPanel";
+import { SettingsPage } from "./components/SettingsPage";
 
 const SETTINGS_ITEMS: Array<{ id: Exclude<ActivePanel, "none">; label: string }> = [
   { id: "profiles", label: "Profiles" },
@@ -293,6 +289,7 @@ export const App: React.FC = () => {
       if (
         appState.viewMode !== "original" ||
         favoritesPageOpen ||
+        activePanel !== "none" ||
         pendingConfirmation ||
         favoritesOpen ||
         settingsOpen ||
@@ -595,13 +592,19 @@ export const App: React.FC = () => {
           aria-busy={hasOngoingProcess}
           tabIndex={-1}
         >
-          {appState.loadError && !favoritesPageOpen && (
+          {appState.loadError && !favoritesPageOpen && activePanel === "none" && (
             <div style={{ padding: 16 }}>
               <AccessibleError message={appState.loadError} />
             </div>
           )}
 
-          {favoritesPageOpen ? (
+          {activePanel !== "none" ? (
+            <SettingsPage
+              activeSection={activePanel}
+              onSelectSection={(section) => setActivePanel(section)}
+              onClose={() => setActivePanel("none")}
+            />
+          ) : favoritesPageOpen ? (
             <FavoritesPage
               favorites={allFavorites}
               currentUrl={appState.url}
@@ -651,22 +654,6 @@ export const App: React.FC = () => {
             </div>
           )}
         </main>
-
-        {activePanel === "profiles" && (
-          <ProfilesPanel onClose={() => setActivePanel("none")} />
-        )}
-        {activePanel === "ai-privacy" && (
-          <AIPrivacyPanel onClose={() => setActivePanel("none")} />
-        )}
-        {activePanel === "voice" && (
-          <VoiceSettingsPanel onClose={() => setActivePanel("none")} />
-        )}
-        {activePanel === "diagnostics" && (
-          <DiagnosticsPanel onClose={() => setActivePanel("none")} />
-        )}
-        {activePanel === "security" && (
-          <SecurityPanel onClose={() => setActivePanel("none")} />
-        )}
       </div>
 
       {showStatusBar && (

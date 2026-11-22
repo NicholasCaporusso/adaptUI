@@ -45,7 +45,7 @@ export const SecurityPanel: React.FC<{ onClose: () => void }> = ({ onClose }) =>
   })();
 
   return (
-    <aside className="shell-side-panel" aria-label="Security">
+    <section className="settings-section-view" aria-label="Security">
       <div className="panel-header">
         <h2 style={{ margin: 0 }}>Security</h2>
         <AccessibleButton label="Close" onActivate={onClose} />
@@ -126,6 +126,6 @@ export const SecurityPanel: React.FC<{ onClose: () => void }> = ({ onClose }) =>
           onActivate={() => void handleClearBrowsing()}
         />
       </div>
-    </aside>
+    </section>
   );
 };

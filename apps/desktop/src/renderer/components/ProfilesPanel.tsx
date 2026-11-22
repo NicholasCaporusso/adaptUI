@@ -45,7 +45,7 @@ export const ProfilesPanel: React.FC<{ onClose: () => void }> = ({ onClose }) =>
   };
 
   return (
-    <aside className="shell-side-panel" aria-label="Accessibility Profiles">
+    <section className="settings-section-view" aria-label="Accessibility Profiles">
       <div className="panel-header">
         <h2 style={{ margin: 0 }}>Accessibility Profiles</h2>
         <AccessibleButton label="Close" onActivate={onClose} />
@@ -315,6 +315,6 @@ export const ProfilesPanel: React.FC<{ onClose: () => void }> = ({ onClose }) =>
           )}
         </div>
       </div>
-    </aside>
+    </section>
   );
 };

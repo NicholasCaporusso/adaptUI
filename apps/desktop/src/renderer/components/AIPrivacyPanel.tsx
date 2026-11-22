@@ -35,7 +35,7 @@ export const AIPrivacyPanel: React.FC<{ onClose: () => void }> = ({ onClose }) =
   };
 
   return (
-    <aside className="shell-side-panel" aria-label="AI and Privacy Settings">
+    <section className="settings-section-view" aria-label="AI and Privacy Settings">
       <div className="panel-header">
         <h2 style={{ margin: 0 }}>AI &amp; Privacy</h2>
         <AccessibleButton label="Close" onActivate={onClose} />
@@ -230,6 +230,6 @@ export const AIPrivacyPanel: React.FC<{ onClose: () => void }> = ({ onClose }) =
           />
         </div>
       </div>
-    </aside>
+    </section>
   );
 };

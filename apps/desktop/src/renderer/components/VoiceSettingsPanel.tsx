@@ -54,7 +54,7 @@ export const VoiceSettingsPanel: React.FC<{ onClose: () => void }> = ({ onClose 
   };
 
   return (
-    <aside className="shell-side-panel" aria-label="Voice and Speech Recognition Settings">
+    <section className="settings-section-view" aria-label="Voice and Speech Recognition Settings">
       <div className="panel-header">
         <h2 style={{ margin: 0 }}>Voice &amp; Speech</h2>
         <AccessibleButton label="Close" onActivate={onClose} />
@@ -289,6 +289,6 @@ export const VoiceSettingsPanel: React.FC<{ onClose: () => void }> = ({ onClose 
           onActivate={() => void handleSave()}
         />
       </div>
-    </aside>
+    </section>
   );
 };

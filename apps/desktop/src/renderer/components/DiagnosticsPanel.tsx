@@ -18,7 +18,7 @@ export const DiagnosticsPanel: React.FC<{ onClose: () => void }> = ({ onClose })
   };
 
   return (
-    <aside className="shell-side-panel" aria-label="Local Diagnostics and Evaluation">
+    <section className="settings-section-view" aria-label="Local Diagnostics and Evaluation">
       <div className="panel-header">
         <h2 style={{ margin: 0 }}>Diagnostics &amp; Model</h2>
         <AccessibleButton label="Close" onActivate={onClose} />
@@ -105,6 +105,6 @@ export const DiagnosticsPanel: React.FC<{ onClose: () => void }> = ({ onClose })
           />
         </div>
       </div>
-    </aside>
+    </section>
   );
 };
