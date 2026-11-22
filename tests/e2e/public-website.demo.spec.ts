@@ -33,10 +33,10 @@ test.describe("Real-World Public Website Integration Demonstration (example.com)
       await expect(window.getByText(/Native CDP: true/i)).toBeVisible();
       await window.getByRole("button", { name: "Close" }).click();
 
-      // Switch to Original Website view and back
-      await window.getByRole("button", { name: "Original Website", exact: true }).click();
+      // Switch to View Original and back to View Adapted
+      await window.getByRole("button", { name: "View Original", exact: true }).click();
       await expect(window.getByText(/Original website live view is active/i)).toBeVisible();
-      await window.getByRole("button", { name: "Reconstructed View" }).click();
+      await window.getByRole("button", { name: "View Adapted", exact: true }).click();
       await expect(
         window.getByRole("heading", { name: /Example Domain/i }).first()
       ).toBeVisible();

@@ -2667,7 +2667,7 @@ class NaturalLanguageCommandAgent {
         ]
       };
     }
-    if (/\b(show|switch|return|back).*\b(reconstructed|accessible|simplified)\b/i.test(lower)) {
+    if (/\b(show|switch|return|back|view).*\b(reconstructed|accessible|simplified|adapted)\b/i.test(lower)) {
       return {
         handled: true,
         steps: [

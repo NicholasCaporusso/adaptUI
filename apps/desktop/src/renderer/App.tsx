@@ -420,8 +420,8 @@ export const App: React.FC = () => {
           <AccessibleButton
             label={
               appState.viewMode === "reconstructed"
-                ? "Original Website"
-                : "Reconstructed View"
+                ? "View Original"
+                : "View Adapted"
             }
             variant="primary"
             onActivate={() =>
@@ -638,7 +638,7 @@ export const App: React.FC = () => {
                 />
                 <div style={{ marginTop: 12 }}>
                   <AccessibleButton
-                    label="Switch to Original Website"
+                    label="View Original"
                     variant="primary"
                     onActivate={() => void setViewMode("original")}
                   />

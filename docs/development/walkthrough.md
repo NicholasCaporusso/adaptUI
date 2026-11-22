@@ -48,8 +48,8 @@ AdaptUI starts an embedded local fixture server and opens **Workflow A: Civic Ac
 
 ## 6. Accessibility Profile Switching & Original Website Fallback
 1. Open **Settings** in the top bar -> **Profiles** -> switch to **Eye-Gaze & Large Targets** or **Dark High Contrast** -> observe immediate updates to target sizes (64px), spacing (24px), text scaling (1.35x), contrast, and reduced motion without restarting.
-2. Click **Original Website** (or type `Show me the original website`) to view the exact live Chromium page with preserved cookies and session state.
-3. Click **Reconstructed View** to return to the accessible interface.
+2. Click **View Original** (or type `Show me the original website`) to view the exact live Chromium page with preserved cookies and session state.
+3. Click **View Adapted** to return to the accessible interface.
 4. Open **Settings** -> **Diagnostics** to inspect the live `SemanticPage` counts, `ElectronCdpBrowserAdapter` capabilities, evaluation metrics, and submit feedback, or **Settings** -> **Security** to review live prompt-injection/link defenses and confirmation policy.
 
 ## 7. Real-World Public Website Demo

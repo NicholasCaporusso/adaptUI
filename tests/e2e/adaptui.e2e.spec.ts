@@ -179,12 +179,12 @@ test.describe("AdaptUI Desktop End-to-End Verification", () => {
       await expect(window.locator(".shell-app")).toHaveAttribute("data-eye-gaze", "true");
       await window.getByRole("button", { name: "Close" }).click();
 
-      // 8: Switch to Original Website view
-      await window.getByRole("button", { name: "Original Website", exact: true }).click();
+      // 8: Switch to View Original
+      await window.getByRole("button", { name: "View Original", exact: true }).click();
       await expect(window.getByText(/Original website live view is active/i)).toBeVisible();
 
-      // 9: Return to Reconstructed View
-      await window.getByRole("button", { name: "Reconstructed View" }).click();
+      // 9: Return to View Adapted
+      await window.getByRole("button", { name: "View Adapted", exact: true }).click();
       await expect(
         window.getByRole("heading", { level: 1, name: /Account Settings/i })
       ).toBeVisible({ timeout: 10_000 });

@@ -710,7 +710,7 @@ export const AccessibleUIRenderer: React.FC<{
           )}`}
         />
         <AccessibleButton
-          label="Switch to Original Website"
+          label="View Original"
           variant="primary"
           onActivate={onSwitchToOriginal}
         />

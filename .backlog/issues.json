@@ -6,14 +6,14 @@
   "issue_count": 1,
   "issues": [
     {
-      "number": 2,
-      "title": "Favorites: display all",
-      "description": "In the Favorites dropdown, add a \"See all\" button that takes to a separate page with the list of favorites. Display a card and table view.",
+      "number": 3,
+      "title": "Rename \"Original Website\"",
+      "description": "Rename \"Original Website\" to \"View Original\" and \"Reconstructed View\" to \"View Adapted\"",
       "state": "open",
       "labels": [],
-      "html_url": "https://github.com/NicholasCaporusso/adaptUI/issues/2",
-      "created_at": "2026-11-22T12:13:15Z",
-      "updated_at": "2026-11-22T12:13:15Z",
+      "html_url": "https://github.com/NicholasCaporusso/adaptUI/issues/3",
+      "created_at": "2026-11-22T12:24:28Z",
+      "updated_at": "2026-11-22T12:24:28Z",
       "author": "NicholasCaporusso"
     }
   ]
