@@ -279,12 +279,18 @@ export const App: React.FC = () => {
   const hasOngoingProcess = Boolean(ongoingProcess);
 
   // Keep native WebContentsView bounds aligned with the main viewport slot in Original Website mode,
-  // and yield viewport when a modal or top-bar menu is open so overlays are never obscured.
+  // and yield viewport when a modal, top-bar menu, or full-screen transition overlay is active.
   useEffect(() => {
     const syncBounds = () => {
       const el = mainPaneRef.current;
       if (!el || !appState) return;
-      if (appState.viewMode !== "original" || pendingConfirmation || favoritesOpen || settingsOpen) {
+      if (
+        appState.viewMode !== "original" ||
+        pendingConfirmation ||
+        favoritesOpen ||
+        settingsOpen ||
+        hasOngoingProcess
+      ) {
         void window.adaptui.updateViewportBounds({ x: 0, y: 0, width: 0, height: 0 });
         return;
       }
@@ -548,45 +554,6 @@ export const App: React.FC = () => {
         </div>
       </header>
 
-      {ongoingProcess && (
-        <div
-          className="shell-activity-banner"
-          role="status"
-          aria-live="polite"
-          aria-busy="true"
-          data-testid="activity-indicator"
-        >
-          <div className="shell-activity-row">
-            <span className="shell-spinner" aria-hidden="true" />
-            <div className="shell-activity-text">
-              <strong>{ongoingProcess.label}</strong>
-              {ongoingProcess.detail && (
-                <span className="shell-activity-detail">{ongoingProcess.detail}</span>
-              )}
-            </div>
-          </div>
-          <div
-            className="shell-progress-track"
-            role="progressbar"
-            aria-label={ongoingProcess.label}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-valuenow={ongoingProcess.progress}
-          >
-            <div
-              className={`shell-progress-bar ${
-                typeof ongoingProcess.progress === "number" ? "" : "shell-progress-indeterminate"
-              }`}
-              style={
-                typeof ongoingProcess.progress === "number"
-                  ? { width: `${Math.max(4, Math.min(100, ongoingProcess.progress))}%` }
-                  : undefined
-              }
-            />
-          </div>
-        </div>
-      )}
-
       <div className="shell-workspace">
         {aiSidebarOpen && (
           <AICommandSidebar
@@ -606,16 +573,6 @@ export const App: React.FC = () => {
           aria-busy={hasOngoingProcess}
           tabIndex={-1}
         >
-          {ongoingProcess && appState.viewMode === "reconstructed" && (
-            <div className="shell-loading-overlay" aria-hidden="true">
-              <div className="shell-loading-card">
-                <span className="shell-spinner shell-spinner-lg" />
-                <strong>{ongoingProcess.label}</strong>
-                {ongoingProcess.detail && <span>{ongoingProcess.detail}</span>}
-              </div>
-            </div>
-          )}
-
           {appState.loadError && (
             <div style={{ padding: 16 }}>
               <AccessibleError message={appState.loadError} />
@@ -703,6 +660,45 @@ export const App: React.FC = () => {
             <strong>{appState.viewMode === "reconstructed" ? "Reconstructed" : "Original"}</strong>
           </span>
         </footer>
+      )}
+
+      {ongoingProcess && (
+        <div
+          className="shell-fullscreen-transition"
+          role="status"
+          aria-live="polite"
+          aria-busy="true"
+          data-testid="activity-indicator"
+        >
+          <div className="shell-transition-card">
+            <span className="shell-spinner shell-spinner-lg" aria-hidden="true" />
+            <h2 className="shell-transition-title">{ongoingProcess.label}</h2>
+            {ongoingProcess.detail && ongoingProcess.detail !== ongoingProcess.label && (
+              <p className="shell-transition-detail">{ongoingProcess.detail}</p>
+            )}
+            <div
+              className="shell-progress-track"
+              role="progressbar"
+              aria-label={ongoingProcess.label}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={ongoingProcess.progress}
+            >
+              <div
+                className={`shell-progress-bar ${
+                  typeof ongoingProcess.progress === "number"
+                    ? ""
+                    : "shell-progress-indeterminate"
+                }`}
+                style={
+                  typeof ongoingProcess.progress === "number"
+                    ? { width: `${Math.max(4, Math.min(100, ongoingProcess.progress))}%` }
+                    : undefined
+                }
+              />
+            </div>
+          </div>
+        </div>
       )}
 
       <AccessibleDialog
