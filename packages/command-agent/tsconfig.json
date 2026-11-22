@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "references": [
+    { "path": "../shared-types" },
+    { "path": "../semantic-model" },
+    { "path": "../browser-core" },
+    { "path": "../ai-core" },
+    { "path": "../security" }
+  ],
+  "include": ["src"]
+}

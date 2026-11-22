@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Open Access Knowledge Hub — Search</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 0; background: #f8fafc; color: #0f172a; }
+    header { background: #0f172a; color: #fff; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; }
+    nav a { color: #94a3b8; margin-right: 16px; text-decoration: none; }
+    main { max-width: 900px; margin: 24px auto; padding: 0 16px; }
+    .search-box { display: flex; gap: 8px; margin-bottom: 20px; }
+    input[type="search"] { flex: 1; padding: 10px; font-size: 16px; }
+    button { padding: 10px 16px; cursor: pointer; }
+    .result-item { background: #fff; border: 1px solid #e2e8f0; padding: 14px; margin-bottom: 12px; border-radius: 6px; }
+    .status { font-size: 14px; color: #475569; margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+  <header>
+    <strong>Open Access Knowledge Hub</strong>
+    <nav aria-label="Site navigation">
+      <a href="/search/index.html">Search Home</a>
+      <a href="/info/index.html">Research Center</a>
+      <a href="/form/index.html">Clinic Form</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Search Accessibility Publications</h1>
+    <p>Search our catalog of open assistive technology and accessibility engineering guides.</p>
+
+    <form id="search-form" role="search" aria-label="Publication search">
+      <div class="search-box">
+        <label for="search-input" style="position:absolute;left:-9999px;">Search publications</label>
+        <input id="search-input" name="q" type="search" placeholder="Search for assistive technology, accessibility research, eye gaze..." aria-label="Search publications" />
+        <label for="category-select" style="position:absolute;left:-9999px;">Category</label>
+        <select id="category-select" name="category" aria-label="Category filter">
+          <option value="all">All categories</option>
+          <option value="assistive-tech">Assistive Technology</option>
+          <option value="web-a11y">Web Accessibility</option>
+          <option value="als">ALS Support</option>
+        </select>
+        <button type="submit" id="search-submit">Search</button>
+      </div>
+    </form>
+
+    <div id="search-status" class="status" role="status" aria-live="polite">
+      Showing all 5 publications. Enter a search query to filter results.
+    </div>
+
+    <section aria-labelledby="results-heading">
+      <h2 id="results-heading">Search Results</h2>
+      <ol id="results-list"></ol>
+    </section>
+  </main>
+
+  <script>
+    const ARTICLES = [
+      {
+        id: "assistive-tech-guide",
+        title: "Assistive Technology Foundations for Web Browsing",
+        category: "assistive-tech",
+        summary: "Practical overview of switch scanning, eye-gaze targets, and adaptive keyboard navigation."
+      },
+      {
+        id: "accessibility-research-2026",
+        title: "Accessibility Research: Semantic Interface Reconstruction",
+        category: "web-a11y",
+        summary: "Empirical study showing how task-oriented UI reconstruction lowers interaction effort."
+      },
+      {
+        id: "als-communication-workflows",
+        title: "ALS Digital Communication and Form Workflows",
+        category: "als",
+        summary: "Step-by-step form completion patterns tailored for people living with ALS."
+      },
+      {
+        id: "eye-gaze-target-sizing",
+        title: "Eye-Gaze Target Sizing and Dwell-Time Ergonomics",
+        category: "assistive-tech",
+        summary: "Guidelines for control dimensions, spacing, and reduced-motion layouts."
+      },
+      {
+        id: "wcag-22-checklist",
+        title: "WCAG 2.2 AA Verification Checklist for Modern Apps",
+        category: "web-a11y",
+        summary: "Focus appearance, dragging alternatives, target size minimums, and error recovery."
+      }
+    ];
+
+    const form = document.getElementById("search-form");
+    const input = document.getElementById("search-input");
+    const categorySelect = document.getElementById("category-select");
+    const statusEl = document.getElementById("search-status");
+    const listEl = document.getElementById("results-list");
+
+    function renderResults(query, category) {
+      const q = (query || "").trim().toLowerCase();
+      const cat = category || "all";
+      const filtered = ARTICLES.filter((item) => {
+        const matchesCat = cat === "all" || item.category === cat;
+        const matchesQuery =
+          !q ||
+          item.title.toLowerCase().includes(q) ||
+          item.summary.toLowerCase().includes(q) ||
+          item.category.toLowerCase().includes(q);
+        return matchesCat && matchesQuery;
+      });
+
+      listEl.innerHTML = "";
+      if (filtered.length === 0) {
+        statusEl.textContent = `No publications found for "${query}".`;
+        return;
+      }
+
+      statusEl.textContent = q
+        ? `Found ${filtered.length} result${filtered.length === 1 ? "" : "s"} for "${query}".`
+        : `Showing ${filtered.length} publications.`;
+
+      filtered.forEach((article, idx) => {
+        const li = document.createElement("li");
+        li.className = "result-item";
+        const a = document.createElement("a");
+        a.href = `/search/article.html?id=${encodeURIComponent(article.id)}&q=${encodeURIComponent(query || "")}`;
+        a.textContent = article.title;
+        a.dataset.resultIndex = String(idx + 1);
+        const p = document.createElement("p");
+        p.textContent = article.summary;
+        li.appendChild(a);
+        li.appendChild(p);
+        listEl.appendChild(li);
+      });
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const q = input.value;
+      const cat = categorySelect.value;
+      const params = new URLSearchParams();
+      if (q) params.set("q", q);
+      if (cat && cat !== "all") params.set("category", cat);
+      const nextUrl = `${window.location.pathname}${params.toString() ? "?" + params.toString() : ""}`;
+      window.history.replaceState({}, "", nextUrl);
+      renderResults(q, cat);
+    });
+
+    const initialParams = new URLSearchParams(window.location.search);
+    input.value = initialParams.get("q") || "";
+    categorySelect.value = initialParams.get("category") || "all";
+    renderResults(input.value, categorySelect.value);
+  </script>
+</body>
+</html>

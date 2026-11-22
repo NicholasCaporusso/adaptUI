@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "jsx": "react-jsx"
+  },
+  "references": [
+    { "path": "../shared-types" },
+    { "path": "../semantic-model" },
+    { "path": "../ui-schema" }
+  ],
+  "include": ["src"]
+}

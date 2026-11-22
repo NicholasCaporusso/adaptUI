@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Publication Detail — Open Access Knowledge Hub</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 0; background: #f8fafc; color: #0f172a; }
+    header { background: #0f172a; color: #fff; padding: 14px 24px; }
+    main { max-width: 820px; margin: 24px auto; padding: 0 16px; }
+  </style>
+</head>
+<body>
+  <header>
+    <strong>Open Access Knowledge Hub</strong>
+  </header>
+  <main>
+    <p><a id="back-link" href="/search/index.html">Back to Search Results</a></p>
+    <h1 id="article-title">Publication</h1>
+    <p id="article-meta"></p>
+    <article id="article-body"></article>
+  </main>
+  <script>
+    const DATA = {
+      "assistive-tech-guide": {
+        title: "Assistive Technology Foundations for Web Browsing",
+        author: "Dr. Maya Lin",
+        body: "Assistive technology users frequently face dense navigation menus, tiny click targets, and unexpected focus jumps. Separating website semantics from layout allows predictable, accessible controls."
+      },
+      "accessibility-research-2026": {
+        title: "Accessibility Research: Semantic Interface Reconstruction",
+        author: "Elena Alvarez",
+        body: "Semantic interface reconstruction builds a validated accessibility model directly from the live browser accessibility tree and DOM, preserving every essential capability."
+      },
+      "als-communication-workflows": {
+        title: "ALS Digital Communication and Form Workflows",
+        author: "Samuel Okafor",
+        body: "People living with ALS benefit from step-by-step forms, large well-spaced targets, natural-language field entry, and explicit confirmation before final submission."
+      },
+      "eye-gaze-target-sizing": {
+        title: "Eye-Gaze Target Sizing and Dwell-Time Ergonomics",
+        author: "Dr. Maya Lin",
+        body: "Eye-gaze interaction performs best with targets of at least 48px to 64px, generous spacing, high contrast, and reduced motion."
+      },
+      "wcag-22-checklist": {
+        title: "WCAG 2.2 AA Verification Checklist for Modern Apps",
+        author: "Accessibility Engineering Group",
+        body: "Key WCAG 2.2 AA criteria include focus not obscured, target size minimum, consistent help, redundant entry reduction, and accessible error identification."
+      }
+    };
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id") || "assistive-tech-guide";
+    const q = params.get("q") || "";
+    const item = DATA[id] || DATA["assistive-tech-guide"];
+    document.title = `${item.title} — Open Access Knowledge Hub`;
+    document.getElementById("article-title").textContent = item.title;
+    document.getElementById("article-meta").textContent = `Author: ${item.author}`;
+    document.getElementById("article-body").innerHTML = `<p>${item.body}</p>`;
+    if (q) {
+      document.getElementById("back-link").href = `/search/index.html?q=${encodeURIComponent(q)}`;
+    }
+  </script>
+</body>
+</html>

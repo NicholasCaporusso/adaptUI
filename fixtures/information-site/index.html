@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Civic Accessibility Research Center — Home</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 0; color: #222; background: #fafafa; }
+    header { background: #1e293b; color: #fff; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; }
+    nav a { color: #cbd5e1; margin-right: 16px; text-decoration: none; }
+    .banner-ad { background: #fef3c7; padding: 8px 24px; font-size: 12px; color: #92400e; }
+    .layout { display: grid; grid-template-columns: 3fr 1fr; gap: 24px; max-width: 1100px; margin: 24px auto; padding: 0 16px; }
+    aside { background: #f1f5f9; padding: 16px; border-radius: 6px; font-size: 14px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+    th, td { border: 1px solid #cbd5e1; padding: 8px; text-align: left; }
+    footer { background: #e2e8f0; padding: 16px 24px; margin-top: 32px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="banner-ad" role="complementary" aria-label="Promotional announcement">
+    Annual Symposium Early Bird Registration Closes Soon — Limited Promotional Seats!
+  </div>
+  <header>
+    <div><strong>Civic Accessibility Research Center</strong></div>
+    <nav aria-label="Primary navigation">
+      <a href="/info/index.html">Home</a>
+      <a href="/info/research.html">Accessibility Research</a>
+      <a href="/info/contact.html">Contact Information</a>
+    </nav>
+  </header>
+
+  <div class="layout">
+    <main id="main-content">
+      <h1>Assistive Technology &amp; Digital Inclusion</h1>
+      <p>
+        The Civic Accessibility Research Center evaluates practical interfaces for people living with motor
+        impairments, including ALS, using switch access, eye-gaze systems, and keyboard-only workflows.
+      </p>
+
+      <figure>
+        <img
+          src="/info/assistive-lab.svg"
+          alt="Diagram of Assistive Technology Lab pillars: Eye-Gaze, Switch Scan, and Natural-Language Commands"
+          width="640"
+          height="240"
+        />
+        <figcaption>Overview of the three core assistive-interface workflows evaluated at our center.</figcaption>
+      </figure>
+
+      <figure>
+        <video
+          controls
+          preload="metadata"
+          poster="/info/assistive-lab.svg"
+          aria-label="Civic Accessibility Lab Orientation Video"
+          width="640"
+          height="240"
+        >
+          <source src="/info/orientation-demo.mp4" type="video/mp4" />
+        </video>
+        <figcaption>Orientation video demonstrating comfortable, user-controlled media playback.</figcaption>
+      </figure>
+
+      <section aria-labelledby="programs-heading">
+        <h2 id="programs-heading">Active Community Programs</h2>
+        <p>We publish open guidelines and run quarterly usability labs with assistive-technology users.</p>
+        <table>
+          <caption>Quarterly Program Schedule</caption>
+          <thead>
+            <tr>
+              <th>Program</th>
+              <th>Schedule</th>
+              <th>Coordinator</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Switch Access Clinic</td>
+              <td>Tuesdays 10:00 AM</td>
+              <td>Dr. Maya Lin</td>
+            </tr>
+            <tr>
+              <td>Eye-Gaze Web Lab</td>
+              <td>Thursdays 2:00 PM</td>
+              <td>Samuel Okafor</td>
+            </tr>
+            <tr>
+              <td>Keyboard Navigation Audit</td>
+              <td>Fridays 1:00 PM</td>
+              <td>Elena Alvarez</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section aria-labelledby="quick-contact-heading">
+        <h2 id="quick-contact-heading">Direct Contact Summary</h2>
+        <p id="contact-email">Email: support@civic-a11y.example</p>
+        <p id="contact-phone">Phone: +1 (555) 014-8920</p>
+        <p id="office-hours">Hours: Monday to Friday, 9:00 AM - 5:00 PM EST</p>
+        <p>
+          <a href="/info/contact.html" id="open-contact-page">View full contact details and office locations</a>
+        </p>
+        <p>
+          <a href="/info/research.html" id="open-research-page">Explore published accessibility research</a>
+        </p>
+      </section>
+    </main>
+
+    <aside aria-label="Related sidebar notices">
+      <h2>Newsletter</h2>
+      <p>Subscribe to our seasonal print digest for updates on civic accessibility legislation.</p>
+      <ul>
+        <li><a href="/info/research.html#wcag">WCAG 2.2 AA Field Notes</a></li>
+        <li><a href="/info/contact.html#locations">Regional Clinics</a></li>
+      </ul>
+    </aside>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 Civic Accessibility Research Center. All rights reserved.</p>
+  </footer>
+</body>
+</html>

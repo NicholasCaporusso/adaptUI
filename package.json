@@ -1,0 +1,53 @@
+{
+  "name": "adaptui",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AdaptUI — Cross-platform, AI-powered accessibility browser application",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "phase0": "electron tests/phase0-feasibility/main.cjs",
+    "dev": "npm --workspace=@adaptui/desktop run dev",
+    "build": "npm run build:packages && npm --workspace=@adaptui/desktop run build",
+    "build:packages": "tsc -b packages/shared-types packages/security packages/semantic-model packages/ui-schema packages/browser-core packages/ai-core packages/ai-providers packages/speech-core packages/command-agent packages/personalization packages/accessible-ui",
+    "typecheck": "npm run build:packages && npm --workspace=@adaptui/desktop run typecheck",
+    "test": "npm run test:unit && npm run test:integration && npm run test:security && npm run test:a11y",
+    "test:unit": "vitest run tests/unit packages",
+    "test:integration": "vitest run tests/integration",
+    "test:security": "vitest run tests/security",
+    "test:a11y": "vitest run tests/accessibility",
+    "test:e2e": "playwright test",
+    "package:win": "npm --workspace=@adaptui/desktop run package:win",
+    "package:mac": "npm --workspace=@adaptui/desktop run package:mac",
+    "package:linux": "npm --workspace=@adaptui/desktop run package:linux"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^22.15.3",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@types/sql.js": "^1.4.9",
+    "@vitejs/plugin-react": "^4.4.1",
+    "axe-core": "^4.10.3",
+    "electron": "^35.2.1",
+    "electron-builder": "^26.0.12",
+    "jsdom": "^26.1.0",
+    "playwright": "^1.52.0",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.4",
+    "vitest": "^3.1.2"
+  },
+  "dependencies": {
+    "react": "^19.1.2",
+    "react-dom": "^19.1.2",
+    "sql.js": "^1.13.0",
+    "zod": "^3.24.3",
+    "zustand": "^5.0.3"
+  }
+}

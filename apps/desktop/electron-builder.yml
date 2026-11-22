@@ -1,0 +1,24 @@
+appId: org.adaptui.desktop
+productName: AdaptUI
+directories:
+  output: release
+files:
+  - dist-electron/**/*
+  - dist-renderer/**/*
+  - package.json
+extraResources:
+  - from: ../../fixtures
+    to: fixtures
+win:
+  target:
+    - nsis
+    - portable
+mac:
+  category: public.app-category.utilities
+  target:
+    - dmg
+linux:
+  category: Utility
+  target:
+    - AppImage
+    - deb

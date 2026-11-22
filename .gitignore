@@ -1,0 +1,15 @@
+node_modules/
+dist/
+out/
+release/
+build/
+coverage/
+.vite/
+*.tsbuildinfo
+*.log
+*.sqlite
+*.sqlite-journal
+.env
+.env.local
+test-results/
+playwright-report/
