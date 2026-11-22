@@ -10,6 +10,7 @@ import type { VoiceSettings, VoiceTranscriptionResult } from "@adaptui/shared-ty
 import { useShellStore, type ActivePanel } from "./store";
 import { useVoiceCapture } from "./hooks/useVoiceCapture";
 import { AICommandSidebar } from "./components/AICommandSidebar";
+import { FavoritesPage } from "./components/FavoritesPage";
 import { ProfilesPanel } from "./components/ProfilesPanel";
 import { AIPrivacyPanel } from "./components/AIPrivacyPanel";
 import { VoiceSettingsPanel } from "./components/VoiceSettingsPanel";
@@ -44,6 +45,8 @@ export const App: React.FC = () => {
   const {
     appState,
     fixtures,
+    customFavorites,
+    favoritesPageOpen,
     activePanel,
     aiSidebarOpen,
     showStatusBar,
@@ -53,6 +56,9 @@ export const App: React.FC = () => {
     voicePreloading,
     busy,
     setActivePanel,
+    setFavoritesPageOpen,
+    addCustomFavorite,
+    removeCustomFavorite,
     setAiSidebarOpen,
     toggleAiSidebar,
     toggleStatusBar,
@@ -286,6 +292,7 @@ export const App: React.FC = () => {
       if (!el || !appState) return;
       if (
         appState.viewMode !== "original" ||
+        favoritesPageOpen ||
         pendingConfirmation ||
         favoritesOpen ||
         settingsOpen ||
@@ -313,6 +320,7 @@ export const App: React.FC = () => {
     };
   }, [
     appState?.viewMode,
+    favoritesPageOpen,
     activePanel,
     aiSidebarOpen,
     showStatusBar,
@@ -333,6 +341,8 @@ export const App: React.FC = () => {
 
   const activeProfile =
     appState.profiles.find((p) => p.id === appState.activeProfileId) ?? appState.profiles[0]!;
+
+  const allFavorites = [...fixtures, ...customFavorites];
 
   const handleAddressSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -458,10 +468,10 @@ export const App: React.FC = () => {
                 onKeyDown={handleMenuArrowKeys}
               >
                 <div className="shell-menu-heading" role="presentation">
-                  Demo Sites
+                  Favorites
                 </div>
-                {fixtures.length > 0 ? (
-                  fixtures.map((f) => (
+                {allFavorites.length > 0 ? (
+                  allFavorites.map((f) => (
                     <button
                       key={f.url}
                       type="button"
@@ -484,6 +494,18 @@ export const App: React.FC = () => {
                     No favorites available
                   </div>
                 )}
+                <div className="shell-menu-divider" role="separator" />
+                <button
+                  type="button"
+                  role="menuitem"
+                  className="shell-menu-item"
+                  onClick={() => {
+                    setFavoritesOpen(false);
+                    setFavoritesPageOpen(true);
+                  }}
+                >
+                  <span>See all</span>
+                </button>
               </div>
             )}
           </div>
@@ -573,13 +595,25 @@ export const App: React.FC = () => {
           aria-busy={hasOngoingProcess}
           tabIndex={-1}
         >
-          {appState.loadError && (
+          {appState.loadError && !favoritesPageOpen && (
             <div style={{ padding: 16 }}>
               <AccessibleError message={appState.loadError} />
             </div>
           )}
 
-          {appState.viewMode === "reconstructed" ? (
+          {favoritesPageOpen ? (
+            <FavoritesPage
+              favorites={allFavorites}
+              currentUrl={appState.url}
+              currentTitle={appState.title}
+              profile={activeProfile}
+              busy={busy}
+              onOpenFavorite={(url) => void navigate(url)}
+              onBookmarkCurrent={() => addCustomFavorite(appState.title, appState.url)}
+              onRemoveFavorite={removeCustomFavorite}
+              onClose={() => setFavoritesPageOpen(false)}
+            />
+          ) : appState.viewMode === "reconstructed" ? (
             appState.semanticPage && appState.uiSpec ? (
               <AccessibleUIRenderer
                 spec={appState.uiSpec}

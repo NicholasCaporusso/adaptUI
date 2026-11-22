@@ -27,6 +27,8 @@ export type ActivePanel =
 interface ShellStore {
   appState: AppStatePayload | null;
   fixtures: Array<{ label: string; url: string; category: string }>;
+  customFavorites: Array<{ label: string; url: string; category: string; custom: true }>;
+  favoritesPageOpen: boolean;
   activePanel: ActivePanel;
   aiSidebarOpen: boolean;
   showStatusBar: boolean;
@@ -40,6 +42,9 @@ interface ShellStore {
   activityMessage: string | null;
   busy: boolean;
   setActivePanel: (panel: ActivePanel) => void;
+  setFavoritesPageOpen: (open: boolean) => void;
+  addCustomFavorite: (label: string, url: string) => void;
+  removeCustomFavorite: (url: string) => void;
   setAiSidebarOpen: (open: boolean) => void;
   toggleAiSidebar: () => void;
   setShowStatusBar: (show: boolean) => void;
@@ -76,9 +81,22 @@ function readInitialShowStatusBar(): boolean {
   }
 }
 
+function readCustomFavorites(): Array<{ label: string; url: string; category: string; custom: true }> {
+  try {
+    const raw = window.localStorage.getItem("adaptui:customFavorites");
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
 export const useShellStore = create<ShellStore>((set, get) => ({
   appState: null,
   fixtures: [],
+  customFavorites: readCustomFavorites(),
+  favoritesPageOpen: false,
   activePanel: "none",
   aiSidebarOpen: true,
   showStatusBar: readInitialShowStatusBar(),
@@ -100,6 +118,24 @@ export const useShellStore = create<ShellStore>((set, get) => ({
     if (panel === "voice") {
       void get().refreshVoiceStatus();
     }
+  },
+
+  setFavoritesPageOpen: (open) => set({ favoritesPageOpen: open }),
+  addCustomFavorite: (label, url) => {
+    const existing = get().customFavorites;
+    if (existing.some((f) => f.url === url)) return;
+    const next = [...existing, { label: label || url, url, category: "Saved", custom: true as const }];
+    try {
+      window.localStorage.setItem("adaptui:customFavorites", JSON.stringify(next));
+    } catch {}
+    set({ customFavorites: next, statusBanner: `Bookmarked "${label || url}".` });
+  },
+  removeCustomFavorite: (url) => {
+    const next = get().customFavorites.filter((f) => f.url !== url);
+    try {
+      window.localStorage.setItem("adaptui:customFavorites", JSON.stringify(next));
+    } catch {}
+    set({ customFavorites: next, statusBanner: "Removed bookmark." });
   },
 
   setAiSidebarOpen: (open) => set({ aiSidebarOpen: open }),
@@ -138,6 +174,7 @@ export const useShellStore = create<ShellStore>((set, get) => ({
 
   navigate: async (url) => {
     set({
+      favoritesPageOpen: false,
       busy: true,
       activityMessage: `Loading ${url}...`,
       statusBanner: `Navigating to ${url}...`,
@@ -154,7 +191,7 @@ export const useShellStore = create<ShellStore>((set, get) => ({
   },
 
   goBack: async () => {
-    set({ busy: true, activityMessage: "Returning to previous page..." });
+    set({ favoritesPageOpen: false, busy: true, activityMessage: "Returning to previous page..." });
     try {
       const next = await window.adaptui.goBack();
       set({ appState: next, statusBanner: `Navigated back to ${next.title || next.url}` });
@@ -164,7 +201,7 @@ export const useShellStore = create<ShellStore>((set, get) => ({
   },
 
   goForward: async () => {
-    set({ busy: true, activityMessage: "Moving forward..." });
+    set({ favoritesPageOpen: false, busy: true, activityMessage: "Moving forward..." });
     try {
       const next = await window.adaptui.goForward();
       set({ appState: next, statusBanner: `Navigated forward to ${next.title || next.url}` });
@@ -174,7 +211,7 @@ export const useShellStore = create<ShellStore>((set, get) => ({
   },
 
   reload: async () => {
-    set({ busy: true, activityMessage: "Reloading and analyzing page..." });
+    set({ favoritesPageOpen: false, busy: true, activityMessage: "Reloading and analyzing page..." });
     try {
       const next = await window.adaptui.reload();
       set({ appState: next, statusBanner: `Reloaded ${next.title || next.url}` });
@@ -186,6 +223,7 @@ export const useShellStore = create<ShellStore>((set, get) => ({
   setViewMode: async (mode) => {
     const next = await window.adaptui.setViewMode(mode);
     set({
+      favoritesPageOpen: false,
       appState: next,
       statusBanner:
         mode === "original"

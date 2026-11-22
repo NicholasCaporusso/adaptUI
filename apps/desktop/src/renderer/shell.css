@@ -475,3 +475,58 @@ body,
   gap: 12px;
   margin-top: 8px;
 }
+
+.favorites-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.favorites-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: calc(var(--aui-control-spacing, 12px) * 1.25);
+}
+
+.favorites-card {
+  border: 2px solid var(--aui-border, #94a3b8);
+  border-radius: 10px;
+  padding: 16px;
+  background: var(--aui-surface, #f8fafc);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.favorites-card-active {
+  border-color: var(--aui-primary, #1d4ed8);
+}
+
+.favorites-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.favorites-card-title {
+  margin: 0;
+  font-size: 1.15em;
+}
+
+.favorites-card-url,
+.favorites-table-url {
+  margin: 0;
+  font-size: 0.85em;
+  color: var(--aui-muted, #475569);
+  word-break: break-all;
+}
+
+.favorites-card-actions {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

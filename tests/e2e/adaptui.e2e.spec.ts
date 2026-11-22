@@ -60,8 +60,18 @@ test.describe("AdaptUI Desktop End-to-End Verification", () => {
       // Verify demo sites are inside the Favorites menu (not cluttering the toolbar when closed)
       await expect(window.getByRole("menu", { name: "Favorites" })).toBeHidden();
 
-      // 5: Interact with reconstructed interface -> switch to Search Hub demo site via Favorites menu
-      await openFavorite(/Search Hub.*Workflow B/i);
+      // Verify Favorites -> "See all" opens dedicated page with Card View and Table View
+      await window.getByRole("button", { name: "Favorites" }).click();
+      await window.getByRole("menu", { name: "Favorites" }).getByRole("menuitem", { name: "See all" }).click();
+      await expect(window.getByRole("heading", { level: 1, name: "All Favorites" })).toBeVisible();
+      await expect(window.getByRole("region", { name: "Favorites card view" })).toBeVisible();
+      await window.getByRole("button", { name: "Table View" }).click();
+      await expect(window.getByRole("table", { name: "All Favorite Websites" })).toBeVisible();
+      await window.getByRole("button", { name: "Card View" }).click();
+      await expect(window.getByRole("region", { name: "Favorites card view" })).toBeVisible();
+      await window.getByRole("button", { name: "Open Search Hub" }).click();
+
+      // 5: Interact with reconstructed interface -> arrived at Search Hub demo site from Favorites page
       await expect(window.getByRole("heading", { name: /Open Access Knowledge Hub/i })).toBeVisible({
         timeout: 10_000,
       });
